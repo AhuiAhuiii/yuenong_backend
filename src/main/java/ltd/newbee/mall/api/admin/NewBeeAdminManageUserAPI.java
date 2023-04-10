@@ -35,10 +35,12 @@ public class NewBeeAdminManageUserAPI {
     @Resource
     private AdminUserService adminUserService;
 
+    //可更改成@slf4j
     private static final Logger logger = LoggerFactory.getLogger(NewBeeAdminManageUserAPI.class);
 
     @RequestMapping(value = "/adminUser/login", method = RequestMethod.POST)
     public Result<String> login(@RequestBody @Valid AdminLoginParam adminLoginParam) {
+        //进行登录的业务操作,最后返回一个token值用来下放token
         String loginResult = adminUserService.login(adminLoginParam.getUserName(), adminLoginParam.getPasswordMd5());
         logger.info("manage login api,adminName={},loginResult={}", adminLoginParam.getUserName(), loginResult);
 

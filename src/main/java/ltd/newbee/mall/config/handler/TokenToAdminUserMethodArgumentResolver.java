@@ -34,17 +34,19 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
     }
 
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+        //寻找controller中的参数有@TokenToAdminUser注解的参数
         if (parameter.getParameterAnnotation(TokenToAdminUser.class) instanceof TokenToAdminUser) {
+            //获取token的值
             String token = webRequest.getHeader("token");
             if (null != token && !"".equals(token) && token.length() == Constants.TOKEN_LENGTH) {
                 AdminUserToken adminUserToken = newBeeAdminUserTokenMapper.selectByToken(token);
-                if (adminUserToken == null) {
+                if (adminUserToken == null) {  //没有对应token
                     NewBeeMallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
-                } else if (adminUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) {
+                } else if (adminUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) { //token过期
                     NewBeeMallException.fail(ServiceResultEnum.ADMIN_TOKEN_EXPIRE_ERROR.getResult());
                 }
-                return adminUserToken;
-            } else {
+                return adminUserToken; //token正确
+            } else { //token错误
                 NewBeeMallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
             }
         }

@@ -26,27 +26,28 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public String login(String userName, String password) {
-        AdminUser loginAdminUser = adminUserMapper.login(userName, password);
+        AdminUser loginAdminUser = adminUserMapper.login(userName, password); //通过select进行数据库比对是否有根据username和password相同的数据
         if (loginAdminUser != null) {
             //登录后即执行修改token的操作
-            String token = getNewToken(System.currentTimeMillis() + "", loginAdminUser.getAdminUserId());
-            AdminUserToken adminUserToken = newBeeAdminUserTokenMapper.selectByPrimaryKey(loginAdminUser.getAdminUserId());
+            String token = getNewToken(System.currentTimeMillis() + "", loginAdminUser.getAdminUserId()); //获取token
+            AdminUserToken adminUserToken = newBeeAdminUserTokenMapper.selectByPrimaryKey(loginAdminUser.getAdminUserId()); //去user_token表中按照userId寻找相应的adminUserToken
             //当前时间
             Date now = new Date();
             //过期时间
             Date expireTime = new Date(now.getTime() + 2 * 24 * 3600 * 1000);//过期时间 48 小时
+            //当发现这个用户在数据库的admin_user_token表中没有token的时候,为其创建一个新的token
             if (adminUserToken == null) {
                 adminUserToken = new AdminUserToken();
                 adminUserToken.setAdminUserId(loginAdminUser.getAdminUserId());
                 adminUserToken.setToken(token);
                 adminUserToken.setUpdateTime(now);
                 adminUserToken.setExpireTime(expireTime);
-                //新增一条token数据
+                //新增一条token数据,新增token
                 if (newBeeAdminUserTokenMapper.insertSelective(adminUserToken) > 0) {
                     //新增成功后返回
-                    return token;
+                    return token; //下放token
                 }
-            } else {
+            } else { //当已经是在admin_user_token表中有数据的时候怎将token进行更新
                 adminUserToken.setToken(token);
                 adminUserToken.setUpdateTime(now);
                 adminUserToken.setExpireTime(expireTime);
