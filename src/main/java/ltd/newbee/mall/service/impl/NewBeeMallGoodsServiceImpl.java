@@ -101,8 +101,8 @@ public class NewBeeMallGoodsServiceImpl implements NewBeeMallGoodsService {
 
     @Override
     public PageResult searchNewBeeMallGoods(PageQueryUtil pageUtil) {
-        List<NewBeeMallGoods> goodsList = goodsMapper.findNewBeeMallGoodsListBySearch(pageUtil);
-        int total = goodsMapper.getTotalNewBeeMallGoodsBySearch(pageUtil);
+        List<NewBeeMallGoods> goodsList = goodsMapper.findNewBeeMallGoodsListBySearch(pageUtil);//按照商品名称和商品的简介进行查询
+        int total = goodsMapper.getTotalNewBeeMallGoodsBySearch(pageUtil);//获取搜索到的数量
         List<NewBeeMallSearchGoodsVO> newBeeMallSearchGoodsVOS = new ArrayList<>();
         if (!CollectionUtils.isEmpty(goodsList)) {
             newBeeMallSearchGoodsVOS = BeanUtil.copyList(goodsList, NewBeeMallSearchGoodsVO.class);
