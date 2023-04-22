@@ -3,6 +3,7 @@
  */
 package ltd.newbee.mall.config.handler;
 
+import ltd.newbee.mall.common.BaseContext;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
@@ -51,6 +52,7 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
                 NewBeeMallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
             }else{
                 MallUserToken mallUserToken = newBeeMallUserTokenMapper.selectByToken(token);
+                BaseContext.setCurrentId(mallUserToken.getUserId());
                 if (mallUserToken == null || mallUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) {
                     NewBeeMallException.fail(ServiceResultEnum.TOKEN_EXPIRE_ERROR.getResult());
                 }
