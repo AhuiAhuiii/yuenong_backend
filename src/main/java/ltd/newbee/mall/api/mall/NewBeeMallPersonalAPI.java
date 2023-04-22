@@ -43,7 +43,7 @@ public class NewBeeMallPersonalAPI {
         logger.info("login api,loginName={},loginResult={}", mallUserLoginParam.getLoginName(), loginResult);
 
         //登录成功
-        if (!StringUtils.isEmpty(loginResult) && loginResult.length() == Constants.TOKEN_LENGTH) {
+        if (!StringUtils.isEmpty(loginResult) ) {
             Result result = ResultGenerator.genSuccessResult();
             result.setData(loginResult);
             return result;
