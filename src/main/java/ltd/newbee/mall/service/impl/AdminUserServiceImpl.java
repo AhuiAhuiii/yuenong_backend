@@ -7,6 +7,7 @@ import ltd.newbee.mall.dao.NewBeeAdminUserTokenMapper;
 import ltd.newbee.mall.entity.AdminUser;
 import ltd.newbee.mall.entity.AdminUserToken;
 import ltd.newbee.mall.service.AdminUserService;
+import ltd.newbee.mall.util.JwtUtils;
 import ltd.newbee.mall.util.MD5Util;
 import ltd.newbee.mall.util.NumberUtil;
 import ltd.newbee.mall.util.SystemUtil;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
@@ -71,8 +74,14 @@ public class AdminUserServiceImpl implements AdminUserService {
      * @return
      */
     private String getNewToken(String timeStr, Long userId) {
-        String src = timeStr + userId + NumberUtil.genRandomNum(6);
-        return SystemUtil.genToken(src);
+        Map<String,Object> claims=new HashMap<>();
+        claims.put("adminUserId",userId);
+        claims.put("Time",timeStr);
+
+        String token = JwtUtils.generateJwt(claims);
+
+
+        return token;
     }
 
 
