@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
@@ -92,8 +94,14 @@ public class NewBeeMallUserServiceImpl implements NewBeeMallUserService {
      * @return
      */
     private String getNewToken(String timeStr, Long userId) {
-        String src = timeStr + userId + NumberUtil.genRandomNum(4);
-        return SystemUtil.genToken(src);
+        Map<String,Object> claims=new HashMap<>();
+        claims.put("adminUserId",userId);
+        claims.put("Time",timeStr);
+
+        String token = JwtUtils.generateJwt(claims);
+
+
+        return token;
     }
 
     @Override

@@ -14,6 +14,7 @@ import ltd.newbee.mall.entity.MallUserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -44,7 +45,11 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
         if (parameter.getParameterAnnotation(TokenToMallUser.class) instanceof TokenToMallUser) {
             MallUser mallUser = null;
             String token = webRequest.getHeader("token");
-            if (null != token && !"".equals(token) && token.length() == Constants.TOKEN_LENGTH) {
+
+            //token是空的
+            if (!StringUtils.hasLength(token)) {
+                NewBeeMallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
+            }else{
                 MallUserToken mallUserToken = newBeeMallUserTokenMapper.selectByToken(token);
                 if (mallUserToken == null || mallUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) {
                     NewBeeMallException.fail(ServiceResultEnum.TOKEN_EXPIRE_ERROR.getResult());
@@ -57,9 +62,24 @@ public class TokenToMallUserMethodArgumentResolver implements HandlerMethodArgum
                     NewBeeMallException.fail(ServiceResultEnum.LOGIN_USER_LOCKED_ERROR.getResult());
                 }
                 return mallUser;
-            } else {
-                NewBeeMallException.fail(ServiceResultEnum.NOT_LOGIN_ERROR.getResult());
             }
+
+//            if (null != token && !"".equals(token) ) {
+//
+//                if (mallUserToken == null || mallUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) {
+//                    NewBeeMallException.fail(ServiceResultEnum.TOKEN_EXPIRE_ERROR.getResult());
+//                }
+//                mallUser = mallUserMapper.selectByPrimaryKey(mallUserToken.getUserId());
+//                if (mallUser == null) {
+//                    NewBeeMallException.fail(ServiceResultEnum.USER_NULL_ERROR.getResult());
+//                }
+//                if (mallUser.getLockedFlag().intValue() == 1) {
+//                    NewBeeMallException.fail(ServiceResultEnum.LOGIN_USER_LOCKED_ERROR.getResult());
+//                }
+//                return mallUser;
+//            } else {
+//                NewBeeMallException.fail(ServiceResultEnum.NOT_LOGIN_ERROR.getResult());
+//            }
         }
         return null;
     }
