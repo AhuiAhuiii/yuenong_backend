@@ -16,24 +16,24 @@
     <select id="login" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from admin_user
+        from tb_newbee_mall_admin_user
         where login_user_name = #{userName,jdbcType=VARCHAR} AND login_password=#{password,jdbcType=VARCHAR} AND locked = 0
     </select>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from admin_user
+        from tb_newbee_mall_admin_user
         where admin_user_id = #{adminUserId,jdbcType=BIGINT}
     </select>
     <insert id="insert" parameterType="ltd.newbee.mall.entity.AdminUser">
-        insert into admin_user (admin_user_id, login_user_name, login_password,
+        insert into tb_newbee_mall_admin_user (admin_user_id, login_user_name, login_password,
         nick_name, locked)
         values (#{adminUserId,jdbcType=BIGINT}, #{loginUserName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR},
         #{nickName,jdbcType=VARCHAR}, #{locked,jdbcType=TINYINT})
     </insert>
     <insert id="insertSelective" parameterType="ltd.newbee.mall.entity.AdminUser">
-        insert into admin_user
+        insert into tb_newbee_mall_admin_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="adminUserId != null">
                 admin_user_id,
@@ -70,7 +70,7 @@
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="ltd.newbee.mall.entity.AdminUser">
-        update admin_user
+        update tb_newbee_mall_admin_user
         <set>
             <if test="loginUserName != null">
                 login_user_name = #{loginUserName,jdbcType=VARCHAR},
@@ -88,7 +88,7 @@
         where admin_user_id = #{adminUserId,jdbcType=BIGINT}
     </update>
     <update id="updateByPrimaryKey" parameterType="ltd.newbee.mall.entity.AdminUser">
-        update admin_user
+        update tb_newbee_mall_admin_user
         set login_user_name = #{loginUserName,jdbcType=VARCHAR},
         login_password = #{loginPassword,jdbcType=VARCHAR},
         nick_name = #{nickName,jdbcType=VARCHAR},
