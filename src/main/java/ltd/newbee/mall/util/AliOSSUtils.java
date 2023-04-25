@@ -2,6 +2,7 @@ package ltd.newbee.mall.util;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.util.UUID;
@@ -9,16 +10,18 @@ import java.util.UUID;
 /**
  * 阿里云 OSS 工具类
  */
+@Component
 public class AliOSSUtils {
 
     private String endpoint = "https://oss-cn-hangzhou.aliyuncs.com";
-    private String accessKeyId = "LTAI4GCH1vX6DKqJWxd6nEuW";
-    private String accessKeySecret = "yBshYweHOpqDuhCArrVHwIiBKpyqSL";
-    private String bucketName = "web-tlias";
+    private String accessKeyId = "LTAI5tEJk3Ypz36NHzXHQCiA";
+    private String accessKeySecret = "OsudwfiYlMK3EV1nNbQ626xlxID75C";
+    private String bucketName = "yuenongshop";
 
     /**
      * 实现上传图片到OSS
      */
+
     public String upload(MultipartFile file) throws IOException {
         // 获取上传的文件的输入流
         InputStream inputStream = file.getInputStream();
