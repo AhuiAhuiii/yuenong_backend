@@ -3,6 +3,7 @@
  */
 package ltd.newbee.mall.config.handler;
 
+import ltd.newbee.mall.common.BaseContext;
 import ltd.newbee.mall.common.Constants;
 import ltd.newbee.mall.common.NewBeeMallException;
 import ltd.newbee.mall.common.ServiceResultEnum;
@@ -56,6 +57,7 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
 
             //寻找库中的token
             AdminUserToken adminUserToken = newBeeAdminUserTokenMapper.selectByToken(token);
+            BaseContext.setCurrentId(adminUserToken.getAdminUserId());
             if (adminUserToken == null) {  //没有对应token
                 NewBeeMallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
             } else if (adminUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) { //token过期
