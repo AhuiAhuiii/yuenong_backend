@@ -2,10 +2,13 @@ package ltd.newbee.mall.api.mall;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import ltd.newbee.mall.config.annotation.TokenToMallUser;
+import ltd.newbee.mall.entity.MallUser;
 import ltd.newbee.mall.util.AliOSSUtils;
 import ltd.newbee.mall.util.ResultGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +26,7 @@ public class uploadController {
     Result result = ResultGenerator.genSuccessResult();
 
     @PostMapping("/newupload")
-    public Result upload(MultipartFile image) throws IOException {
+    public Result upload(@RequestBody MultipartFile image,@TokenToMallUser MallUser loginMallUser) throws IOException {
         log.info("文件上传:{}",image.getOriginalFilename());
 
         String url = aliOSSUtils.upload(image);

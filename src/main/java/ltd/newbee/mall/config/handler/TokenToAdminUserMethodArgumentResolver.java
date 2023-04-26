@@ -43,7 +43,7 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
             String token = webRequest.getHeader("token");
 
             //token是空的
-            if (StringUtils.hasLength(token)) {
+            if (!StringUtils.hasLength(token)) {
                 NewBeeMallException.fail(ServiceResultEnum.ADMIN_NOT_LOGIN_ERROR.getResult());
             }
 
@@ -63,7 +63,7 @@ public class TokenToAdminUserMethodArgumentResolver implements HandlerMethodArgu
             } else if (adminUserToken.getExpireTime().getTime() <= System.currentTimeMillis()) { //token过期
                 NewBeeMallException.fail(ServiceResultEnum.ADMIN_TOKEN_EXPIRE_ERROR.getResult());
             }
-
+            return adminUserToken;
         }
         return null;
     }
