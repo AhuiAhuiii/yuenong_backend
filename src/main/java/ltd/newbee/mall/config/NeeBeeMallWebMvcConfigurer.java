@@ -49,8 +49,11 @@ public class NeeBeeMallWebMvcConfigurer extends WebMvcConfigurationSupport {
      */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOriginPatterns("*")
-                .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowCredentials(true).maxAge(3600);
+        registry.addMapping("/**")
+                .allowedOrigins("http://101.42.16.229")  // 可跨域的域名，可以为 *
+                .allowCredentials(true)
+                .allowedMethods("*")   // 允许跨域的方法，可以单独配置
+                .allowedHeaders("*")   // 允许跨域的请求头，可以单独配置
+                .maxAge(3600);
     }
 }
